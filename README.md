@@ -1,6 +1,3 @@
-Sure, here's a sample README file for a Learning Management System (LMS) on GitHub:
-
-```markdown
 # Learning Management System (LMS)
 
 ## Overview
@@ -37,6 +34,20 @@ This repository contains the source code for a Learning Management System (LMS).
 - **Progress Tracking:**
   - Monitor student progress, including completion of modules and performance in assessments.
 
+## Technologies Used
+
+- **Frontend:**
+  - [React](https://reactjs.org/) for building the user interface.
+  - [Redux](https://redux.js.org/) for state management.
+
+- **Backend:**
+  - [Node.js](https://nodejs.org/) for server-side development.
+  - [Express.js](https://expressjs.com/) for building the RESTful API.
+  - [MongoDB](https://www.mongodb.com/) for the database.
+
+- **Authentication:**
+  - [JWT (JSON Web Tokens)](https://jwt.io/) for secure user authentication.
+
 ## Getting Started
 
 ### Prerequisites
@@ -53,6 +64,11 @@ This repository contains the source code for a Learning Management System (LMS).
 ### Configuration
 
 1. Create a `.env` file in the `server` directory with the following variables:
+
+   ```env
+   PORT=3001
+   MONGODB_URI=mongodb://localhost:27017/lms
+   JWT_SECRET=your_secret_key
 
 2. Adjust the values according to your environment.
 
