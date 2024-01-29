@@ -49,14 +49,7 @@ This repository contains the source code for a Learning Management System (LMS).
 
 ### Configuration
 
-1. Create a `.env` file in the `server` directory with the following variables:
-
-   ```env
-   PORT=3001
-   MONGODB_URI=mongodb://localhost:27017/lms
-   JWT_SECRET=your_secret_key
-
-2. Adjust the values according to your environment.
+1. Adjust the values according to your environment.
 
 ### Running the Application
 
