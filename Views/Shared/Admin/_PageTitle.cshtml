@@ -1,0 +1,24 @@
+﻿<div class="page-title-area">
+    <div class="row align-items-center">
+        <div class="col-sm-6">
+            <div class="breadcrumbs-area clearfix">
+                <h4 class="page-title pull-left">@ViewBag.Title</h4>
+            </div>
+        </div>
+        <div class="col-sm-6 clearfix">
+            <div class="user-profile pull-right">
+                @{ 
+                    string src = "https://glauniversity.in:8096/assets/profiles/" + Session["FID"] + ".jpg";
+                }
+                <img class="avatar user-thumb" src="@src" alt="avatar">
+                <h4 class="user-name dropdown-toggle" data-toggle="dropdown">@Session["FName"]<i class="fa fa-angle-down"></i>
+                </h4>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Message</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <a class="dropdown-item" onclick="logout()">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

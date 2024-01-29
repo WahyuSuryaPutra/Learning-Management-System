@@ -1,0 +1,93 @@
+﻿@using System.Data;
+
+@{
+    Layout = null;
+    DataTable dataA = (DataTable)ViewData["dataAssignemnts"];
+    DataTable dataS = (DataTable)ViewData["dataStudents"];
+}
+@if (dataA.Rows.Count > 0)
+{
+    <!-- Progress Table start -->
+
+    <div class="single-table">
+        <div class="table-responsive">
+            <table class="table table-hover progress-table text-center">
+                <thead class="text-uppercase">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Student Name</th>
+                        <th scope="col">Upload DateTime</th>
+                        <th scope="col">Marks</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < dataA.Rows.Count; i++)
+                    {
+                        bool ch = true;
+                        if (dataA.Rows[i][5].ToString() == "NaN")
+                        {
+                            ch = false;
+                        }
+                        int temp = i + 1;
+
+                        <tr>
+                            <th scope="row">@temp</th>
+                            <td>
+                                @{
+                                    string exp = "studentID = " + dataA.Rows[i][4];
+                                    var fData = dataS.Select(exp);
+                                    var d = dataS.Rows.IndexOf(fData[0]);
+                                }
+                                @dataS.Rows[d][1]
+                            </td>
+                            <td>@dataA.Rows[i][3]</td>
+                            <td>
+                                @if (ch)
+                                {
+                                    string[] str = dataA.Rows[i][5].ToString().Split('/');
+                                    double ln = Convert.ToDouble(str[0]) / Convert.ToDouble(str[1]) * 100;
+
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar" role="progressbar" style="width: @ln%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-danger">Not Evaluated!!</div>
+                                }
+                            </td>
+                            <td>
+                                @if (ch)
+                                {
+                                    <span class="status-p bg-success">Evaluated</span>
+                                }
+
+                                else
+                                {
+                                    <span class="status-p bg-warning">Pending</span>
+                                }
+                            </td>
+                            <td>
+                                <ul class="d-flex justify-content-center">
+                                    <li class="mr-3"><a href="@Url.Action("Download", "Student", new { filename = "GautamYadav", path = dataA.Rows[i][2]})" class="text-secondary"><i class="ti ti-import"></i></a></li>
+                                    <li><a href="@Url.Action("DummyEvaluate", "Admin", new {assignmentID = dataA.Rows[i][0]})"><i class="ti-ruler-pencil"></i></a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Progress Table end -->
+}
+else
+{
+    <div class="alert alert-danger">
+        Umm!! No assignemnts found.
+    </div>
+}

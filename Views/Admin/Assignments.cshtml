@@ -1,0 +1,99 @@
+﻿@using System.Data
+
+@{
+    Layout = "~/Views/Shared/Admin/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Assignments";
+    DataTable dt = (DataTable)ViewData["data"];
+    DataTable sub = (DataTable)ViewData["Subjects"];
+
+    bool isNext = ViewBag.isNextID;
+    int nextID = ViewBag.nextID;
+
+    string evalStatus = ViewBag.evalStatus;
+}
+
+
+<div class="col-lg-12 mt-5">
+    <div class="card">
+        @if (dt.Rows.Count > 0)
+        {
+            <div class="card-body">
+                <h4 class="header-title">Assignments</h4>
+                <div id="accordionnnn" class="according accordion-s3 gradiant-bg">
+                    @for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        string id = "accordion" + i;
+                        string exp = "Id = " + dt.Rows[i][4];
+                        DataRow[] r = sub.Select(exp);
+                        int _i = sub.Rows.IndexOf(r[0]);
+
+                        string exp2 = "facultyID = " + dt.Rows[i][6];
+
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="card-link collapsed right" data-toggle="collapse" href="#@id">
+                                    @dt.Rows[i][1] (@sub.Rows[_i][1])
+                                </a>
+                            </div>
+                            <div id="@id" class="collapse" data-parent="#accordionnnn">
+                                <div id="dataTablee" class="card-body">
+                                    <div class="alert alert-primary">
+                                        <a class="alert-link" href="@Url.Action("Download", "Student", new { filename = "Gautam Yadav", path = dt.Rows[i][3] })"><b><u>This</u></b></a>
+                                        assignment was on <strong>@dt.Rows[i][5]</strong> last date to submit is <b>@dt.Rows[i][7]</b>
+                                    </div>
+                                    @{
+                                        Html.RenderAction("ShowAssignment", "Admin", new { docID = dt.Rows[i][0] });
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger m-0">
+                <strong>Hmmm!!</strong> You don't have uploaded any assignment.
+            </div>
+        }
+    </div>
+</div>
+<!-- accordion style 4 end -->
+
+
+<div class="modal fade" id="modal-xl2">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Evaluate Assignment</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @{
+                if (isNext == true)
+                {
+                    Html.RenderAction("Evaluate", "Admin", new { assignmentID = nextID });
+                }
+            }
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section Scripts{
+    <script>
+        if ('@evalStatus' == 'NaN') {
+            alert("Evaluated Successfully !!")
+        }
+        if ('@isNext' == 'True' || '@isNext' == 'true') {
+            $("#modal-xl2").modal()
+        }
+    </script>
+
+}

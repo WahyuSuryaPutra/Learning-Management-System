@@ -1,0 +1,145 @@
+﻿@using System.Data
+
+
+@{
+    ViewBag.Title = "Subjets";
+    Layout = "~/Views/Shared/Admin/_Layout.cshtml";
+
+
+    DataTable sub = (DataTable)ViewData["Subjects"];
+
+    bool hasUpload = ViewBag.hasUpload;
+
+    int subID = 0;
+    string type = "no";
+
+    if (hasUpload == true)
+    {
+        subID = ViewBag.subID;
+        type = ViewBag.uploadType;
+    }
+}
+
+<style>
+    .a-btn {
+        padding-top: 10px;
+    }
+</style>
+
+
+<div class="col-lg-12 mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="header-title">Subjects</h4>
+            <div id="accordion1" class="according">
+                @for (int i = 0; i < sub.Rows.Count; i++)
+                {
+                    int t = i + 1;
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="card-link" data-toggle="collapse" href="#accordion_@t@i">
+                                #@t &nbsp; @sub.Rows[i][1]
+                            </a>
+                        </div>
+                        <div id="accordion_@t@i" class="collapse" data-parent="#accordion1">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="assgnments_@i@t-tab" data-toggle="tab" href="#assgnments_@i@t" role="tab" aria-controls="assgnments_@i@t" aria-selected="true">Assignments</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="notes_@i@t-tab" data-toggle="tab" href="#notes_@i@t" role="tab" aria-controls="notes_@i@t" aria-selected="false">Notes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="syllabus_@i@t-tab" data-toggle="tab" href="#syllabus_@i@t" role="tab" aria-controls="syllabus_@i@t" aria-selected="false">Syllabus</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="plan_@i@t-tab" data-toggle="tab" href="#plan_@i@t" role="tab" aria-controls="plan_@i@t" aria-selected="false">Plan</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content mt-3" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="assgnments_@i@t" role="tabpanel" aria-labelledby="assgnments_@i@t-tab">
+                                        @{
+                                            Html.RenderAction("UAssignments", new { subId = sub.Rows[i][0] });
+                                        }
+                                        <div class="text-center">
+                                            <a href="@Url.Action("DummyUpload", "Admin", new {subId = sub.Rows[i][0], type = "Assignment"})">
+                                                <button onclick="" class="btn btn-light a-btn">
+                                                    <i class="ti-plus"></i>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="notes_@i@t" role="tabpanel" aria-labelledby="notes_@i@t-tab">
+                                        @{
+                                            Html.RenderAction("UNotes", new { subId = sub.Rows[i][0] });
+                                        }
+                                        <div class="text-center">
+                                            <a href="@Url.Action("DummyUpload", "Admin", new {subId = sub.Rows[i][0], type = "Notes"})">
+                                                <button onclick="" class="btn btn-light a-btn">
+                                                    <i class="ti-plus"></i>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="syllabus_@i@t" role="tabpanel" aria-labelledby="syllabus_@i@t-tab">
+                                        @{
+                                            Html.RenderAction("USyllabus", new { subId = sub.Rows[i][0] });
+                                        }
+                                        <div class="text-center">
+                                            <a href="@Url.Action("DummyUpload", "Admin", new {subId = sub.Rows[i][0], type = "Syllabus"})">
+                                                <button onclick="" class="btn btn-light a-btn">
+                                                    <i class="ti-plus"></i>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="plan_@i@t" role="tabpanel" aria-labelledby="notes_@i@t-tab">
+                                        @{
+                                            Html.RenderAction("Plan", "Admin");
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (hasUpload == true)
+{
+    <div class="modal fade" id="modal-xl2">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload @type</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @{
+                    Html.RenderAction("Upload", "Admin", new { subID = subID, type = type });
+                }
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
+
+    @section Scripts{
+
+        @if (hasUpload == true)
+        {
+            <script>
+                $("#modal-xl2").modal()
+            </script>
+        }
+
+
+    }}

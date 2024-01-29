@@ -1,0 +1,98 @@
+﻿@{
+    System.Data.DataTable dtbl = Session["sliderItems"] as System.Data.DataTable;
+    System.Data.DataTable dtbl1 = Session["sliderItems1"] as System.Data.DataTable;
+}
+
+<link rel="stylesheet" href="~/dist/css/adminlte.css" />
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="@Url.Action("Index")" class="brand-link">
+        <img src="/dist/img/Logo.png" alt="GLA Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">GLA University</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image mt-2">
+                @{
+                    string imgurl = "https://glauniversity.in:8103/" + Session["Roll"] + ".jpg";
+                }
+                <img src="@imgurl" class="mt-1 img-circle elevation-2 " alt="Profile">
+            </div>
+            <div class="info">
+                <div class="d-block unn">@Session["Name"]</div>
+                <div class="d-block unn small">@Session["Course"] (@Session["Branch"])</div>
+            </div>
+        </div>
+        <div class="info">
+        </div>
+
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @for (int i = 0; i < dtbl.Rows.Count; i++)
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>@dtbl.Rows[i][1].ToString()<i class="right fas fa-angle-left"></i></p>
+                        </a>
+                        @for (int j = 0; j < dtbl1.Rows.Count; j++)
+                        {
+                            if (dtbl1.Rows[j][3].ToString() == dtbl.Rows[i][0].ToString())
+                            {
+
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>@dtbl1.Rows[j][1]<i class="right fas fa-angle-left"></i> </p>
+
+                                        </a>
+                                        @for (int k = 0; k < dtbl1.Rows.Count; k++)
+                                        {
+                                            if (dtbl1.Rows[k][3].ToString() == dtbl1.Rows[j][0].ToString())
+                                            {
+                                                <ul class="nav nav-treeview">
+                                                    <li class="nav-item">
+                                                        <a href="@Url.Action("Subject", "Student", new { subId = dtbl1.Rows[k][0], subName = dtbl1.Rows[k][1] })" class="nav-link">
+                                                            <i class="nav-icon fas fa-book"></i>
+                                                            <p class="pl-3">@dtbl1.Rows[k][1]</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            }
+                                        }
+
+                                    </li>
+                                </ul>
+                            }
+                        }
+                    </li>
+                }
+                <li class="nav-header">ACCOUNT</li>
+                <li class="nav-item">
+                    <a onclick="logout()" class="nav-link lgbtn">
+                        <img class="nav-icon" src="~/img/signout.png" />
+                        <p>Sign Out</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

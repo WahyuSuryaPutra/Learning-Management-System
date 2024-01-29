@@ -1,0 +1,30 @@
+﻿<div class="sidebar-menu">
+    <div class="sidebar-header">
+            <div style="text-align : center;" class="logo">
+                <a href="@Url.Action("Index", "Admin")"><img src="~/dist/img/Logo.png"></a>
+                <p onclick="document.location = '@Url.Action("Index", "Admin")'" style="color : white; font-weight : 700; font-size : 19px; cursor : pointer;">GLA University</p>
+            </div>
+    </div>
+    <div class="main-menu">
+        <div class="menu-inner">
+            <nav>
+                <ul class="metismenu" id="menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Admin")">
+                            <i class="ti-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>dashboard</span></a>
+                        <ul class="collapse">
+                            <li><a href="@Url.Action("Assignments", "Admin")">Assignments</a></li>
+                            <li><a href="@Url.Action("Subjects", "Admin")">Subjects</a></li>
+                            <li><a href="@Url.Action("FileUpload", "Admin")">Upload Docs</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

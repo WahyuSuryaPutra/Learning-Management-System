@@ -1,0 +1,395 @@
+﻿@using System.Data;
+
+
+@{
+    ViewBag.Title = ViewBag.Name;
+
+    IList<string> fac = ViewData["Faculty"] as IList<string>;
+    List<int> upA = (List<int>)ViewData["uploadedAssignments"];
+
+    bool hasFaculty = ViewBag.FacD.Contains("no");
+
+    DataTable assignments = ViewData["Assignments"] as DataTable;
+    DataTable syllabus = ViewData["Syllabus"] as DataTable;
+    DataTable notes = ViewData["Notes"] as DataTable;
+
+    bool hasAssignment = assignments.Rows.Count > 0;
+    bool hasNotes = notes.Rows.Count > 0;
+    bool hasSyllabus = syllabus.Rows.Count > 0;
+
+
+    DataTable uploads = (DataTable)ViewData["uploads"];
+}
+
+@section Styles{
+
+    <style>
+        .status-p {
+            border-radius: 20px;
+            width: 90px;
+            text-align: center;
+            padding-bottom: 1.5px;
+        }
+    </style>
+}
+
+<h2>@ViewBag.Name</h2>
+
+<div class="row">
+    <div class="col-md-3">
+
+        @* Profile Image *@
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                @if (hasFaculty)
+                {
+                    string imgurl = "https://glauniversity.in:8096/assets/profiles/" + fac[1] + ".jpg";
+                    <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle"
+                             src=@imgurl
+                             alt="User profile picture">
+                    </div>
+                    <h3 class="profile-username text-center">@fac[0]</h3>
+                    <p class="text-muted text-center">@fac[2]</p>
+                    <ul class="list-group list-group-unbordered mb-0">
+                        <li class="list-group-item p-0">
+                            <strong><i class="fas fa-phone mr-1"></i>Contact No</strong>
+                            <p class="text-muted">
+                                @fac[3]
+                            </p>
+                            <hr>
+                            <strong><i class="fas fa-mail-bulk mr-1"></i>Email</strong>
+                            <p class="text-muted">@fac[4]</p>
+                            @*<hr>*@
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <div class="alert alert-dangerr mb-0" role="alert">
+                        No Faculty found!!
+                    </div>
+                }
+            </div>
+
+            <!-- /.card-body -->
+        </div>
+
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link active" href="#notes" data-toggle="tab">Notes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#syllabus" data-toggle="tab">Syllabus</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#assignment" data-toggle="tab">Assignment</a></li>
+                </ul>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="active tab-pane" id="notes">
+                        @if (hasNotes)
+                        {
+                            <div style="overflow: auto;" class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Title</th>
+                                            <th>Uploaded on</th>
+                                            <th style="width: 40px">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < notes.Rows.Count; i++)
+                                        {
+                                            int temp = i + 1;
+                                            <tr>
+                                                <td>@temp.</td>
+                                                <td>@notes.Rows[i][1]</td>
+                                                <td>
+                                                    <div class="text-center">
+                                                        @notes.Rows[i][5]
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @*<a onclick="loadDoc('@notes.Rows[i][3]')" data-toggle="modal" data-target="#modal-xl" href="#"><i class="fas fa-eye mr-1"></i></a>*@
+                                                    <a href="@Url.Action("Download", "Student", new { filename = notes.Rows[i][1], path = notes.Rows[i][3]})"><span class="ti-save"></span></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-dangerr">
+                                No notes available!!
+                            </div>
+                        }
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="syllabus">
+                        @if (hasSyllabus)
+                        {
+                            <div style="overflow: auto;" class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Title</th>
+                                            <th>Uploaded on</th>
+                                            <th style="width: 40px">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < syllabus.Rows.Count; i++)
+                                        {
+                                            int temp = i + 1;
+                                            <tr>
+                                                <td>@temp.</td>
+                                                <td>@syllabus.Rows[i][1]</td>
+                                                <td>
+                                                    <div class="text-body">
+                                                        @syllabus.Rows[i][5]
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <!--<a onclick="loadDoc('@syllabus.Rows[i][3]')" data-toggle="modal" data-target="#modal-xl" href="#">-->@*<i class="fas fa-eye mr-1"></i>*@ <!--<span class="ti-download"></span> </a>-->
+                                                    <a href="@Url.Action("Download", "Student", new { filename = syllabus.Rows[i][1], path = syllabus.Rows[i][3]})"><span class="ti-save"></span></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-dangerr">
+                                No syllabus available!!
+                            </div>
+                        }
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="assignment">
+                        @if (hasAssignment)
+                        {
+                            <div style="overflow: auto;" class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Title</th>
+                                            <th id="dsd">Last Date</th>
+                                            <th style="width: 100px">Actions</th>
+                                            <th style="width : 100px;">Status</th>
+                                            <th>M.O</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < assignments.Rows.Count; i++)
+                                        {
+                                            int id = Convert.ToInt32(assignments.Rows[i][0]);
+                                            int temp = i + 1;
+                                            DateTime lastDate = Convert.ToDateTime(assignments.Rows[i][7]);
+                                            int state = 0;
+
+                                            string exp = "documentID = " + assignments.Rows[i][0];
+                                            DataRow[] d = uploads.Select(exp);
+
+                                            if (upA.Contains(id))
+                                            {
+                                                state = 2;
+                                            }
+                                            else if (lastDate <= DateTime.Now)
+                                            {
+                                                state = 1;
+                                            }
+                                            <tr>
+                                                <td>@temp.</td>
+                                                <td>@assignments.Rows[i][1]</td>
+                                                <td>
+                                                    @if (state == 0)
+                                                    {
+                                                        <p class="text-orange m-0">@assignments.Rows[i][7]</p>
+                                                    }
+                                                    else if (state == 1)
+                                                    {
+                                                        <p class="text-red m-0">@assignments.Rows[i][7]</p>
+                                                    }
+                                                    else if (state == 2)
+                                                    {
+                                                        <p class="text-success m-0">@assignments.Rows[i][7]</p>
+                                                    }
+                                                </td>
+                                                @*    <td>
+                                                        <input type="file" />
+                                                    </td>*@
+                                                <td class="text-center">
+                                                    @{
+                                                        string tt = "'" + assignments.Rows[i][3] + "'";
+                                                    }
+                                                    @*<a onclick="loadDoc('@tt')" data-toggle="modal" data-target="#modal-xl" href="#"><span class="ti-eye mr-2"></span></a>*@
+                                                    <a href="@Url.Action("Download", "Student", new { filename = assignments.Rows[i][1], path = assignments.Rows[i][3]})"><span class="ti-save"></span></a>
+                                                    @if (state == 0)
+                                                    {
+                                                        <a data-toggle="modal" onclick="setAID(@assignments.Rows[i][0])" data-target="#modal-xl2" href="#"><span class="ti-export ml-2"></span></a>
+                                                    }
+                                                </td>
+                                                <td class="text-center center-block">
+                                                    @if (state == 0)
+                                                    {
+                                                        <p style="color : #fff" class="status-p bg-gradient-orange m-0">Pending <!--&nbsp;--> @*<i class="ti-info-alt mr-1"></i>*@ </p>
+                                                    }
+                                                    else if (state == 1)
+                                                    {
+                                                        <p class="status-p bg-gradient-red m-0">Expired <!--&nbsp;--> @*<i class="ti-na mr-1"></i>*@</p>
+                                                    }
+                                                    else if (state == 2)
+                                                    {
+                                                        <p class="status-p bg-gradient-success m-0">Submitted <!--&nbsp;--> @*<i class="ti-check-box mr-1"></i>*@</p>
+                                                    }
+                                                </td>
+                                                <td class="text-center">
+                                                    @if (state == 2)
+                                                    {
+                                                        int _i = uploads.Rows.IndexOf(d[0]);
+
+                                                        if (uploads.Rows[_i][5].ToString() == "NaN")
+                                                        {
+                                                            <div>---</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div>@uploads.Rows[_i][5]</div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div>---</div>
+                                                    }
+                                                </td>
+                                                <td class="text-center">
+                                                    @if (state == 2)
+                                                    {
+                                                        int _i = uploads.Rows.IndexOf(d[0]);
+
+                                                        if (uploads.Rows[_i][5].ToString() == "NaN")
+                                                        {
+                                                            <div>---</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div>@uploads.Rows[_i][6]</div>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <div>---</div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-dangerr">
+                                No assignment available!!
+                            </div>
+                        }
+
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+</div>
+
+<div class="modal fade" id="modal-xl">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Extra Large Modal</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="docsOpener"></iframe>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-xl2">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Upload Assignment</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Subject", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="custom-file">
+                            <input name="docsID" id="aID" hidden />
+                            <input required name="assgnmentFile" onchange="fileChange()" type="file" class="custom-file-input" id="inputGroupFile02">
+                            <label id="fileLabel" class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            }
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section Scripts{
+
+    <script>
+        var selectedID
+
+        function setAID(id) {
+            document.getElementById("aID").value = id
+            selectedID = id;
+        }
+
+        function fileChange() {
+            file = document.getElementsByName('assgnmentFile')[0].files[0]['name']
+            document.getElementById('fileLabel').innerHTML = file
+        }
+
+        function loadDoc(path) {
+            e = document.getElementById("docsOpener")
+            e.src = path
+        }
+    </script>
+
+}

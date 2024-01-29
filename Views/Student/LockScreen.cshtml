@@ -1,0 +1,98 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GLA University</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.css">
+</head>
+<body class="hold-transition lockscreen" >
+    <!-- Automatic element centering -->
+
+    <div class="lockscreen-wrapper">
+        <div class="row justify-content-center">
+            <div>
+                <h1 class="heading-section">GLA University</h1>
+            </div>
+        </div>
+            <div class="lockscreen-logo">
+                <h3><b>Student Portal</b></h3>
+            </div>
+            <!-- User name -->
+            <div id="PrevUsr" class="lockscreen-name"></div>
+
+            <!-- START LOCK SCREEN ITEM -->
+            <div class="lockscreen-item">
+                <!-- lockscreen image -->
+                <div class="lockscreen-image">
+                    <img id="profile_img" src="" alt="">
+                </div>
+                    <!-- /.lockscreen-image -->
+                    <!-- lockscreen credentials (contains the form) -->
+                    <form action="Login" class="lockscreen-credentials" method="post">
+                        <div class="input-group">
+                            <input type="text" hidden id="uname" name="uname" />
+                            <input name="password" type="password" class="form-control" placeholder="password">
+
+                            <div class="input-group-append">
+                                <button type="submit" class="btn">
+                                    <i class="fas fa-arrow-right text-muted"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- /.lockscreen credentials -->
+
+                </div>
+                <!-- /.lockscreen-item -->
+                <div class="help-block text-center">
+                    Enter your password to retrieve your session
+                </div>
+                <div class="text-center">
+                    <a onclick="redirectToLogin()" href="#">Or sign in as a different user</a>
+                </div>
+            </div>
+        <!-- /.center -->
+        <!-- jQuery -->
+        <script src="../../plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script>
+
+            window.onload = function () {
+                noBack();
+            }
+
+            function noBack() {
+                window.history.forward();
+            }
+
+
+            if (localStorage["PrevUsr"] == 'null' && localStorage["PrevRoll"] == 'null' ||
+                localStorage["PrevUsr"] == undefined && localStorage["PrevRoll"] == undefined) {
+                window.location.href = "/Student/Login"
+            } else {
+                document.getElementById("PrevUsr").innerHTML = localStorage["PrevUsr"]
+                document.getElementById("uname").value = localStorage["PrevUsr"]
+                document.getElementById("profile_img").src = imgurl = "https://glauniversity.in:8103/" + localStorage["PrevRoll"] + ".jpg"
+                document.getElementById("uname").style = "display : none;"
+                function redirectToLogin() {
+                    localStorage["PrevUsr"] = null;
+                    localStorage["PrevRoll"] = null;
+                    window.location.href = "/Student/Login"
+                }
+            }
+        </script>
+</body>
+</html>

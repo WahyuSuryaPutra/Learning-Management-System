@@ -1,0 +1,105 @@
+﻿
+@{
+    Layout = null;
+
+    List<string> data = (List<string>)ViewData["data"];
+}
+
+<style>
+    .profile {
+        height: 65px;
+        width: 65px;
+        border-radius: 50%;
+        margin-right: 12px;
+        border: 5px solid #2f4f4f29;
+    }
+</style>
+
+<div class="col-12 p-4">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row justify-content-around">
+                <div class="col-md-2">
+                    <strong>Subject Name</strong> <br />
+                    @data[2] <br />
+                </div>
+                <div class="col-md-2">
+                    <strong>Semester</strong> <br />
+                    @data[3] <br />
+                </div>
+                <div class="col-md-2">
+                    <strong>Year</strong> <br />
+                    @data[4] <br />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<hr style="width : 20%; margin: auto;" />
+@using (Html.BeginForm("Upload", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+    <div>
+        <div class="card-body">
+            <div class="form-row">
+                <input name="subId" hidden value="@data[0]" />
+                <input name="type" hidden value="@data[1]" />
+                <div class="col-md-12 mb-3">
+                    <label for="validationCustom01">Title</label>
+                    <input name="title" type="text" class="form-control" id="validationCustom01" placeholder="Enter Title" required="">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                @if (data[1] == "Assignment")
+
+                {
+                    <div class="col-md-12">
+                        <div id="dateTimeInputGroup" class="form-group">
+                            <label for="lastDateInput" class="col-form-label">Last Date</label>
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3 form-group">
+                                    <input name="lastDateOnly" class="form-control" id="lastDateInput" type="date" />
+                                </div>
+                                <div class="col-md-6 mb-3 form-group">
+                                    <input name="lastTimeOnly" value="00:00" class="form-control" id="lastDateTime" type="time" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="col-md-12">
+                        <label for="inputGroupFile02">File</label>
+                    <div class="custom-file">
+                        <input name="filee" onchange="fileChange()" type="file" class="custom-file-input" id="inputGroupFile02">
+                        <label id="fileLabel" class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                    </div>
+                    <!--
+                    <div class="input-group-append">
+                        <span class="input-group-text">Upload</span>
+                    </div>
+                        -->
+                </div>
+            </div>
+        </div>
+        <!-- Server side end -->
+
+        <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+}
+
+
+
+<script>
+    function fileChange() {
+        file = document.getElementsByName('filee')[0].files[0]['name']
+        document.getElementById('fileLabel').innerHTML = file
+    }
+</script>

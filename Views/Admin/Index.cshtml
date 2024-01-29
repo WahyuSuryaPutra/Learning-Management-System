@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Admin/_Layout.cshtml";
+}
+
+@*@section Styles{
+
+    <style>
+        .icon-card{
+            margin-right : 50px;
+            margin-bottom : 25px;
+            font-size : 70px;
+        }
+    </style>
+
+    }*@
+
+<div class="row">
+    <div class="col-md-6 mt-5 mb-3">
+        <div class="card">
+            <div class="small-box sbg1 mb-0">
+                <div class="inner">
+                    <h3 class="text-white">Subjects</h3>
+                    <h6 class="text-white">Assignments, Syllabus, Notes etc.</h6>
+                </div>
+                <div class="icon">
+                    <i class="ti-bookmark"></i>
+                </div>
+                <a href="@Url.Action("Subjects", "Admin")" class="small-box-footer">
+                    Navigate to Page <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mt-md-5 mb-3">
+        <div class="card">
+            <div class="small-box sbg2 mb-0">
+                <div class="inner">
+                    <h3 class="text-white">Assignments</h3>
+                    <h6 class="text-white">Evaluate Assignemnts etc.</h6>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-edit"></i>
+                </div>
+                <a href="@Url.Action("Assignments", "Admin")" class="small-box-footer">
+                    Navigate to Page<i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3 mb-lg-0">
+        <div class="card">
+            <div class="seo-fact sbg3">
+                <div class="p-4 d-flex justify-content-between align-items-center">
+                    <div class="seofct-icon">Impressions</div>
+                    <canvas id="seolinechart3" height="60"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="seo-fact sbg4">
+                <div class="p-4 d-flex justify-content-between align-items-center">
+                    <div class="seofct-icon">New Users</div>
+                    <canvas id="seolinechart4" height="60"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

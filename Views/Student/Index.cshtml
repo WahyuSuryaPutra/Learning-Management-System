@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@section Styles{
+
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css" />
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="info-box bg-info">
+            <span class="info-box-icon"><i class="far fa-bookmark"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Assignments</span>
+                <span class="info-box-number">@ViewBag.Done / @ViewBag.Total</span>
+
+                <div class="progress">
+                    @{
+                        double per = Convert.ToDouble(ViewBag.Done) / Convert.ToDouble(ViewBag.Total);
+                        per = Math.Round(per * 100, 2);
+                    }
+                    <div class="progress-bar" style="width: @per%"></div>
+                </div>
+                <span class="progress-description">
+                    You have done @per% Assignments.
+                </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-sm-6">
+        <div class="info-box bg-success">
+            <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Assignment Result</span>
+                <span class="info-box-number">@ViewBag.Result</span>
+
+                <div class="progress">
+                    <div class="progress-bar" style="width: @ViewBag.Result%"></div>
+                </div>
+                <span class="progress-description">
+                    We know you can do more better.
+                </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+</div>
+<!-- /.row -->
+<!-- =========================================================== -->
+
+<div class="jumbotron">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <video class="img-fluid" autoplay loop muted>
+                <source src="~/dist/img/GLA.mp4" type="video/mp4" />
+            </video>
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Welcome!</h5>
+                <p>
+                    Here You Can Access your all lectures as per your syllabus.<br />In Case Video Lecuture or Notes are not available please wait...
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+            enables a clean separation of concerns and gives you full control over markup
+            for enjoyable, agile development.
+        </p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+    <script>
+
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 4000
+    });
+
+
+    if ("@ViewBag.assignmentStatus" == "0xSSCCFF") {
+        Toast.fire({
+            icon: 'success',
+            title: 'Yaah!! <br> Assignment uploaded successfully.'
+        })
+    } else if ("@ViewBag.assignmentStatus" == "0xEECCFF") {
+        Toast.fire({
+            icon: 'error',
+            title: 'Oops!! <br> Something went wrong.'
+        })
+    } else if ("@ViewBag.assignmentStatus" == "0xNFCCFF") {
+        Toast.fire({
+            icon: 'error',
+            title: 'Error :   Please Specify a valid file, <br> while uploading assignment'
+        })
+    }
+    </script>
+
+
+
+}

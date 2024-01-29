@@ -1,0 +1,52 @@
+﻿@using System.Data
+
+@{
+    Layout = null;
+
+
+    DataTable data = (DataTable)ViewData["Data"];
+}
+<link href="~/dist/style.css" rel="stylesheet" />
+
+
+@if (data != null && data.Rows.Count > 0)
+{
+    <div class="single-table">
+        <div class="table-responsive">
+            <table class="table text-center">
+                <thead class="text-uppercase bg-gradient-indigo">
+                    <tr class="text-white">
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">date</th>
+                        <th scope="col">Last Date</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < data.Rows.Count; i++)
+                    {
+                        int t = i + 1;
+                        <tr>
+                            <th scope="row">@t</th>
+                            <td>@data.Rows[i][1]</td>
+                            <td>@data.Rows[i][5]</td>
+                            <td>@data.Rows[i][7]</td>
+                            <td>
+                                <a class="text-decoration-none" href="@Url.Action("Download", "Student", new {filename = "GautamYadav", path = data.Rows[i][3]})"><i class="ti-download"></i></a> &nbsp;
+                                <a onclick="return confirm('Are you sure ?')" class="text-decoration-none" href="@Url.Action("Delete", "Admin", new {filename="GautamYadav", path = data.Rows[i][3] })"> <i class="ti-trash"></i></a> &nbsp;
+                                <i class="ti-pencil-alt"></i>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert border-danger text-red" role="alert">
+        <strong>Hmmm!!</strong> No records found.
+    </div>
+}
