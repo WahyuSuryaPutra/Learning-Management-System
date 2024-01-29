@@ -1,0 +1,65 @@
+﻿.a-btn {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: animate2 500ms;
+    padding-top: 10px;
+}
+
+    .a-btn:hover {
+        animation: animate 500ms ease;
+        transform: rotate(180deg);
+        color: deepskyblue;
+    }
+
+@keyframes animate {
+    from {
+        color: black;
+        transform: rotate(0deg)
+    }
+
+    to {
+        color: deepskyblue;
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes animate2 {
+    from {
+        color: deepskyblue;
+        transform: rotate(180deg);
+    }
+
+    to {
+        color: black;
+        transform: rotate(0deg)
+    }
+}
+
+.redir-btn {
+    margin-top: 40px;
+    border-radius: 50px;
+    box-shadow: 0 0 22px rgb(0 0 0 / 7%);
+}
+
+    .redir-btn div {
+        height: 5px;
+    }
+
+    .redir-btn a {
+        color: white;
+        background-color: black;
+        padding-top: 10px;
+        width: 100%;
+        height: 45px;
+        border-radius: 50px;
+    }
+
+
+.backimg {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    position: absolute;
+}
+
